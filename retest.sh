@@ -34,7 +34,7 @@ fi
 while read p; do
   features+=($p)
   test_count=$((test_count + 1))
-done < my.fails.txt
+done < $output
 
 for i in "${features[@]}"
 do
