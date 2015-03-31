@@ -17,7 +17,7 @@ print_usage ()
 print_still_failing ()
 {
   failures=$1
-  echo "" > $output
+  rm $output
   for i in "${failures[@]}"
   do
     :
