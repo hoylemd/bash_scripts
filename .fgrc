@@ -1,0 +1,5 @@
+ENV=""
+SERVICENAME="magnum-ui"
+INSTALLCMD="npm install"
+RUNCMD="npm start"
+

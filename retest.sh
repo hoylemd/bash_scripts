@@ -7,13 +7,6 @@ features=()
 failures=()
 output="my.retest_fails.txt"
 
-print_usage ()
-{
-  usage="Usage: retest.sh <path_to_list_of_features>"
-  echo $usage
-  exit 1
-}
-
 print_still_failing ()
 {
   failures=$1
