@@ -6,15 +6,25 @@ cd $1
 # script installer/updater
 # params: source, destination
 install () {
-  echo installing $1 to $2
   ln -fs $1 $2
-
   return 0
 }
 
-for script in "update.sh" "rebase.sh" "fg.sh"
+add_git_exclusion () {
+  if ! grep -q $1 .git/info/exclude;
+  then
+    echo $1 >> .git/info/exclude
+  fi
+}
+
+scripts=()
+scripts+=("update.sh")
+scripts+=("rebase.sh")
+scripts+=("fg.sh")
+scripts+=("go.sh")
+
+for script in "${scripts[@]}"
 do
-  echo $loc
   target="$loc/$script"
   install $target $script
 done
@@ -23,9 +33,11 @@ if [ ! -e .fgrc ]; then
   cp $loc/.fgrc .
 fi
 
-for script in "update.sh" "rebase.sh" "fg.sh" ".fgrc" "my.*"
+for script in "${scripts[@]}"
 do
-  echo $script >> .git/info/exclude
+  add_git_exclusion $script
 done
+add_git_exclusion ".fgrc"
+add_git_exclusion "my.*"
 
 vim .fgrc
