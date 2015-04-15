@@ -1,5 +1,8 @@
-ENV=""
-SERVICENAME="magnum-ui"
-INSTALLCMD="npm install"
-RUNCMD="npm start"
+ENV="../evolve-env"
+SERVICENAME="evolve"
+INSTALLCMD="make install"
+RUNCMD="gunicorn_paster development.ini"
 
+TESTCMD=nosetests
+TESTEXCLUDE=--exclude=integration
+TESTPATH="test/"

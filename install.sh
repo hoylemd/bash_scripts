@@ -22,6 +22,7 @@ scripts+=("update.sh")
 scripts+=("rebase.sh")
 scripts+=("fg.sh")
 scripts+=("go.sh")
+scripts+=("runtests.sh")
 
 for script in "${scripts[@]}"
 do
