@@ -11,6 +11,6 @@ git push mhoyle
 
 git co $branch
 
-if [-n "$INSTALLCMD" ]; then
+if [ -n "$INSTALLCMD" ]; then
   $INSTALLCMD
 fi
