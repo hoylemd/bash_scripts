@@ -1,7 +1,10 @@
 ENV="../evolve-env"
+SUPERVISOR=""
 SERVICENAME="evolve"
 INSTALLCMD="make install"
 RUNCMD="gunicorn_paster development.ini"
+
+MYREPOSITORY="mhoyle"
 
 TESTCMD=nosetests
 TESTEXCLUDE=--exclude=integration

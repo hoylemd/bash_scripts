@@ -1,11 +1,18 @@
 ENV=""
+SUPERVISOR=""
 SERVICENAME=""
 RUNCMD=""
 
 source .fgrc
 
 if [ -n "$SERVICENAME" ]; then
-  sudo supervisorctl stop $SERVICENAME
+  if [ -z "$SUPERVISOR" ] || [ "$SUPERVISOR" == "supervisorctl" ]; then
+    sudo supervisorctl stop $SERVICENAME
+  elif [ "$SUPERVISOR" == "init.d" ]; then
+    sudo /etc/init.d/$SERVICENAME stop
+  elif [ "$SUPERVISOR" == "custom" ]; then
+    ./$SERVICENAME
+  fi
 fi
 
 if [ -n "$ENV" ]; then
