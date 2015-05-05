@@ -1,18 +1,19 @@
 INSTALLCMD=""
-MYREPOSITORY=""
+MYREMOTE=""
 
 source .fgrc
 
 branch=$(git rev-parse --abbrev-ref HEAD)
 
-if [ -z "$MYREPOSITORY" ]; then
-  MYREPOSITORY=mhoyle
+if [ -z "$MYREMOTE" ]; then
+  MYREMOTE=mhoyle
 fi
 
 git co master
 git fetch origin
 git merge origin/master
-git push -u $MYREPOSITORY master
+
+./push-upstream.sh
 
 git co $branch
 
