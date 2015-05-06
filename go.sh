@@ -10,6 +10,8 @@ if [ -n "$SERVICENAME" ]; then
     sudo supervisorctl stop $SERVICENAME
   elif [ "$SUPERVISOR" == "init.d" ]; then
     sudo /etc/init.d/$SERVICENAME stop
+  elif [ "$SUPERVISOR" == "service" ]; then
+    sudo service $SERVICENAME stop
   elif [ "$SUPERVISOR" == "custom" ]; then
     ./$SERVICENAME
   fi
