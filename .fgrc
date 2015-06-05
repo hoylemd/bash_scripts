@@ -7,7 +7,7 @@ INSTALLCMD="make install"           # command to run to install/setup this app
 RUNCMD="gunicorn_paster evolve.ini" # command to run the app in theforeground
 
 MYREMOTE="mhoyle"                   # the remote name to use for your upstream
-REPO_NAME="evolve"                  # the repository name for this app
+REPO_NAME="bash_scripts"            # the repository name for this app
 GITHUB_URL="github.2ndsiteinc.com"  # optional: url to your git server (github)
 
 TESTCMD=nosetests                   # command to run tests
