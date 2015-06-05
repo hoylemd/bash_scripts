@@ -20,7 +20,7 @@ eval $push_cmd
 if [ $? -gt 0 ]; then
   if [ -n "$REPO_NAME" ]; then
     git remote add $MYREMOTE git@$GITHUB_URL:$MYREMOTE/$REPO_NAME
-    eval $push_cmd
+    $push_cmd
   else
     echo "No repository name set. Please edit the 'REPO_NAME' setting in .fgrc"
   fi
