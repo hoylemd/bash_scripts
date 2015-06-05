@@ -134,10 +134,47 @@ fg.sh
 
 runtests.sh
 -----------
-
+- run tests!
+- Some of my scripts have #!/bin/bash at the top
+- This comment tells the OS what interpreter to use. You can do this for any scripting language - python included
+- It's not strictly needed for .sh files, since the bash interpreter is the default.
+- Allow for passing in a specific path
+  - allows me to run specific tests by passing in an argument.
+  - TESTCMD is intended to be just the executable command (`nosetests`, `bundle exec cucumber`, etc)
+  - TESTEXCLUDE is flags and arguments to pass in (exclusions, path prefix etc)
+- I want to add something here to do some kind of report on the test, but I don't know how to do that.
+- I have a specific to capybara one that *does* do some reporting though (dofeature.sh and capy.sh)
 
 install.sh
 ----------
+- This one is pretty neat
+- I use it to install my scripts in a project with symlinks.
+- This ensures that I only have one copy of the scripts to modify and update, and all projects get the changes for free.
+- It always gets run from the scripts repo directory
+- I pass in a path to a project to install at.
+- Remember the current directory, and swich to the target one.
+- declare a function!
+  - You don't define parameter names in the signature - you access them just like in the main script, with $#
+  - it's messy, but useful to reduce code duplication
+- declare linker (`install`) and excluder (`add_git_exclusion`) functions
+- excluder adds a given file to the target repo's .git/info/exclude - very similar to .gitignore,
+  but it's not in the actual repo
+- create an array
+- append a bunch of script names here
+- for loop!
+  - "${scripts[@]}" to access each part of the array
+  - I don't know what all of thise symbols do, but this works.
+  - symlink to each script
+- copy the settings file
+  - this will definitely be wrong, because this is just a template. Needs to be customized.
+- loop over the list and add exclusions
+- add the settings exclusion
+- add an exclusion for all files prefixed with 'my.'. This allows me to add temporary files to be ignore by git
+  by adding that prefix. very handy!
+- open the new settings file for editing
+  - This is where you'd get the scripts set up for use. Anything marked 'optional' can be safely set to empty string
+
+
 
 
 

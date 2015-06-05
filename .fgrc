@@ -1,18 +1,18 @@
-ENV="../evolve-env"                 # optional: path to this app's virtualenv
+ENV=""                              # optional: path to this app's virtualenv
 SUPERVISOR=""                       # optional: supervisor type
                                     #  acceptable values:(init.d, supervisorctl)
                                     #  default: supervisorctl
-SERVICENAME="bash_scripts"          # optional: the app's supervisor service name
+SERVICENAME=""                      # optional: the app's supervisor service name
 INSTALLCMD="make install"           # command to run to install/setup this app
-RUNCMD="gunicorn_paster evolve.ini" # command to run the app in theforeground
+RUNCMD="make server"                # command to run the app in theforeground
 
 MYREMOTE="mhoyle"                   # the remote name to use for your upstream
 REPO_NAME="bash_scripts"            # the repository name for this app
-GITHUB_URL="github.2ndsiteinc.com"  # optional: url to your git server (github)
+GITHUB_URL=""                       # optional: url to your git server (github)
 
-TESTCMD=nosetests                   # command to run tests
-TESTEXCLUDE=--exclude=integration   # flags to pass to test command
-TESTPATH="test/"                    # default path to pass after flags to the
-                                    #  test command. will be superseded by
-                                    #  anything actually passed when invoking
-                                    #  runtests.sh
+TESTCMD="make test"                 # optional: command to run tests
+TESTEXCLUDE=""                      # optional: flags to pass to test command
+TESTPATH=""                         # optional: default path to pass after
+                                    #  flags to the test command. will be
+                                    #  superseded by anything actually passed
+                                    #  when invoking runtests.sh

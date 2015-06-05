@@ -20,7 +20,6 @@ add_git_exclusion () {
 scripts=()
 scripts+=("push-upstream.sh")
 scripts+=("update.sh")
-scripts+=("rebase.sh")
 scripts+=("fg.sh")
 scripts+=("go.sh")
 scripts+=("runtests.sh")
