@@ -1,7 +1,6 @@
 MYREMOTE=""
 REPO_NAME=""
 GITHUB_URL=""
-set -x
 
 source .fgrc
 

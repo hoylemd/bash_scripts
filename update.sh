@@ -1,6 +1,5 @@
 INSTALLCMD=""
 MYREMOTE=""
-set -x
 
 source .fgrc
 
