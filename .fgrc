@@ -2,7 +2,7 @@ ENV="../evolve-env"                 # optional: path to this app's virtualenv
 SUPERVISOR=""                       # optional: supervisor type
                                     #  acceptable values:(init.d, supervisorctl)
                                     #  default: supervisorctl
-SERVICENAME="evolve"                # optional: the app's supervisor service name
+SERVICENAME="bash_scripts"          # optional: the app's supervisor service name
 INSTALLCMD="make install"           # command to run to install/setup this app
 RUNCMD="gunicorn_paster evolve.ini" # command to run the app in theforeground
 
