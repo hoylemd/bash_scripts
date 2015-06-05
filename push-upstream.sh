@@ -14,7 +14,7 @@ if [ -z "$GITHUB_URL" ]; then
   GITHUB_URL="github.2ndsiteinc.com"
 fi
 
-push_cmd="git push -u $MYREMOTE master"
+push_cmd="git push -u $MYREMOTE $branch"
 $push_cmd
 
 if [ $? -gt 0 ]; then
