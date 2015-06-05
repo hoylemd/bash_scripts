@@ -173,17 +173,3 @@ install.sh
   by adding that prefix. very handy!
 - open the new settings file for editing
   - This is where you'd get the scripts set up for use. Anything marked 'optional' can be safely set to empty string
-
-
-
-
-
-
-
-
-
-
-
-
-
-
