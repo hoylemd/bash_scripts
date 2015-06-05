@@ -1,6 +1,7 @@
 MYREMOTE=""
 REPO_NAME=""
-GITHUB_URL="github.2ndsiteinc.com"
+GITHUB_URL=""
+set -x
 
 source .fgrc
 
@@ -15,7 +16,7 @@ if [ -z "$GITHUB_URL" ]; then
 fi
 
 push_cmd="git push -u $MYREMOTE master"
-eval $push_cmd
+$push_cmd
 
 if [ $? -gt 0 ]; then
   if [ -n "$REPO_NAME" ]; then
