@@ -30,10 +30,6 @@ do
   install $target $script
 done
 
-if [ ! -e .fgrc ]; then
-  cp $loc/.fgrc .
-fi
-
 for script in "${scripts[@]}"
 do
   add_git_exclusion $script
@@ -41,4 +37,8 @@ done
 add_git_exclusion ".fgrc"
 add_git_exclusion "my.*"
 
-vim .fgrc
+if [ ! -e .fgrc ]; then
+  cp $loc/.fgrc .
+  vim .fgrc
+fi
+

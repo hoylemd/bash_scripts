@@ -9,13 +9,6 @@ if [ -z "$MYREMOTE" ]; then
   MYREMOTE=mhoyle
 fi
 
-rebase=false
-if [ "$1" ]; then
-  if [ "-r" == "$1" ]; then
-    rebase=true
-  fi
-fi
-
 git co master
 git fetch origin
 git merge origin/master
@@ -24,8 +17,10 @@ git merge origin/master
 
 git co $branch
 
-if [ $rebase ]; then
-  git rebase master
+if [ "$1" ]; then
+  if [ "-r" == "$1" ]; then
+    git rebase master
+  fi
 fi
 
 if [ -n "$INSTALLCMD" ]; then

@@ -173,3 +173,9 @@ install.sh
   by adding that prefix. very handy!
 - open the new settings file for editing
   - This is where you'd get the scripts set up for use. Anything marked 'optional' can be safely set to empty string
+
+Resources
+---------
+- Google! Bash is very widely used, so it's not hard to find a solution to what you want to do
+- http://mywiki.wooledge.org/BashGuide - BashGuide recommended by the folks at #bash on freenode
+- #bash on freenode! Sometimes, you just need to ask

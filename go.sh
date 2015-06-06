@@ -13,7 +13,7 @@ if [ -n "$SERVICENAME" ]; then
   elif [ "$SUPERVISOR" == "service" ]; then
     sudo service $SERVICENAME stop
   elif [ "$SUPERVISOR" == "custom" ]; then
-    ./$SERVICENAME
+    $SERVICENAME
   fi
 fi
 
