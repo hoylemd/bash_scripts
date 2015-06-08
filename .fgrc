@@ -8,7 +8,7 @@ RUNCMD="make server"                # command to run the app in theforeground
 
 MYREMOTE="mhoyle"                   # the remote name to use for your upstream
 REPO_NAME="bash_scripts"            # the repository name for this app
-GITHUB_URL=""                       # optional: url to your git server (github)
+GITHUB_URL="github.2ndsiteinc.com"  # optional: url to your git server (github)
 
 TESTCMD="make test"                 # optional: command to run tests
 TESTEXCLUDE=""                      # optional: flags to pass to test command
