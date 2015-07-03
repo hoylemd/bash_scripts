@@ -1,4 +1,4 @@
-yusful_shit
+bash_scripts
 ===========
 
-a repo of yusful shits i made
+a repo of bash_scripts i made

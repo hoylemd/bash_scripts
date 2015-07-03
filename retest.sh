@@ -3,7 +3,7 @@
 fail_count=0
 pass_count=0
 test_count=0
-features=()
+tests=()
 failures=()
 output="my.retest_fails.txt"
 
@@ -25,14 +25,14 @@ if [ -z $fail_list ]; then
 fi
 
 while read p; do
-  features+=($p)
+  tests+=($p)
   test_count=$((test_count + 1))
 done < $fail_list
 
-for i in "${features[@]}"
+for i in "${tests[@]}"
 do
   :
-  eval ./dofeature.sh $i
+  eval ./runtests.sh $i
   if [ $? -gt 0 ]
   then
     fail_count=$((fail_count + 1))
@@ -47,11 +47,11 @@ echo Results
 if [ $fail_count -gt 0 ]
 then
   echo FAIL!!!!
-  echo $fail_count of $test_count features failed
-  echo The following features are still failing:
+  echo $fail_count of $test_count tests failed
+  echo The following tests are still failing:
   print_still_failing $failures
 else
   echo PASS!
-  echo all $pass_count of $test_count features passed
+  echo all $pass_count of $test_count tests passed
 fi
 
