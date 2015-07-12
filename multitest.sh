@@ -30,7 +30,7 @@ passes=0
 # run test runs
 for (( c=0; c<$times; c++ ))
 do
-  eval ./runtests $tests
+  ./runtests.sh $tests
   if [ $? -gt 0 ]
   then
     failures=$((failures + 1))
