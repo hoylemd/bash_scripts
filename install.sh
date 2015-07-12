@@ -33,7 +33,7 @@ do
 done
 
 for script in $renamed_scripts; do
-  name="project-$name"
+  name="project-$script"
   target="$loc/$name"
   install $target $script
 done
