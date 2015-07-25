@@ -37,6 +37,7 @@ do
 done
 add_git_exclusion ".fgrc"
 add_git_exclusion "my.*"
+add_git_exclusion "env"
 
 if [ ! -e .fgrc ]; then
   cp $loc/.fgrc .
