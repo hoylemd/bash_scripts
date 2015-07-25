@@ -24,6 +24,7 @@ scripts+=("fg.sh")
 scripts+=("go.sh")
 scripts+=("runtests.sh")
 scripts+=("add_remote.sh")
+scripts+=("bicep.sh")
 
 for script in "${scripts[@]}"
 do
