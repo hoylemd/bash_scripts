@@ -6,36 +6,51 @@ cd $1
 # script installer/updater
 # params: source, destination
 install () {
-  ln -fs $1 $2
-  return 0
+  src=$1 # source
+  dest=$2 # destination
+
+  ln -fs $src $dest
 }
 
 add_git_exclusion () {
-  if ! grep -q $1 .git/info/exclude;
+  exclusion=$1 # path to exclude
+
+  if ! grep -q $exclusion .git/info/exclude;
   then
-    echo $1 >> .git/info/exclude
+    echo $exclusion >> .git/info/exclude
   fi
 }
 
-scripts=()
-scripts+=("push-upstream.sh")
-scripts+=("update.sh")
-scripts+=("fg.sh")
-scripts+=("go.sh")
-scripts+=("runtests.sh")
-scripts+=("add_remote.sh")
-scripts+=("bicep.sh")
+set_project_name () {
+  target_file=$1 # the file to do the operation on
 
-for script in "${scripts[@]}"
+  echo ":wq" | vim .fgrc -c "%s/REPO_NAME=\"\"/$name/g"
+}
+
+scripts="push-upstream.sh update.sh fg.sh go.sh runtests.sh add_remote.sh"
+scripts="$scripts bicep.sh"
+renamed_scripts="install.sh"
+all_scripts="$scripts $renamed_scripts"
+
+for script in $scripts
 do
   target="$loc/$script"
   install $target $script
 done
 
-for script in "${scripts[@]}"
+for script in $renamed_scripts; do
+  name="project-$name"
+  target="$loc/$name"
+  install $target $script
+done
+
+git init
+
+for script in $all_scripts
 do
   add_git_exclusion $script
 done
+
 add_git_exclusion ".fgrc"
 add_git_exclusion "my.*"
 add_git_exclusion "env"
