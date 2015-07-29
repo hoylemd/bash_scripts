@@ -23,6 +23,4 @@ if [ "$1" ]; then
   fi
 fi
 
-if [ -n "$INSTALLCMD" ]; then
-  $INSTALLCMD
-fi
+./install.sh

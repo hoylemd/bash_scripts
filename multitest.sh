@@ -1,8 +1,10 @@
 #!/bin/bash
 
+source .fgrc
+
 print_usage ()
 {
-  usage="Usage: capy.sh <path to features> [number of runs]"
+  usage="usage multitest.sh <number of runs> [tests path]"
   echo $usage
   exit 1
 }
@@ -12,17 +14,14 @@ if [ $# -eq 0 ]; then
   print_usage
 fi
 
-# parse / validate features
+# parse / validate times
 if [ -z $1 ]; then
   print_usage
 fi
-features=$1
+times=$1
 
-# parse / validate times
-times=$2
-if [ -z $times ]; then
-  times=1
-fi
+# parse / validate tests
+tests=$2
 
 # initialize reporting
 failures=0
@@ -31,7 +30,7 @@ passes=0
 # run test runs
 for (( c=0; c<$times; c++ ))
 do
-  eval ./dofeature.sh $features
+  ./runtests.sh $tests
   if [ $? -gt 0 ]
   then
     failures=$((failures + 1))

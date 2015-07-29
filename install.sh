@@ -21,12 +21,6 @@ add_git_exclusion () {
   fi
 }
 
-set_project_name () {
-  target_file=$1 # the file to do the operation on
-
-  echo ":wq" | vim .fgrc -c "%s/REPO_NAME=\"\"/$name/g"
-}
-
 scripts="push-upstream.sh update.sh fg.sh go.sh runtests.sh add_remote.sh"
 scripts="$scripts bicep.sh"
 renamed_scripts="install.sh"
