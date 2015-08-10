@@ -47,6 +47,7 @@ done
 
 add_git_exclusion ".fgrc"
 add_git_exclusion "my.*"
+add_git_exclusion "their.*"
 add_git_exclusion "env"
 
 if [ ! -e .fgrc ]; then
