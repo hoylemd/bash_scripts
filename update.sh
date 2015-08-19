@@ -12,7 +12,7 @@ fi
 git co master
 git fetch origin
 git merge origin/master
-if [ $? ]; then
+if [ ! $? ]; then
   exit $?
 fi
 
