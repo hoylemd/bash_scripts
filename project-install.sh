@@ -2,5 +2,5 @@ INSTALLCMD=""
 source .fgrc
 
 if [ -n "$INSTALLCMD" ]; then
-  ./$INSTALLCMD
+  $INSTALLCMD
 fi

@@ -22,7 +22,7 @@ add_git_exclusion () {
 }
 
 scripts="push-upstream.sh update.sh fg.sh go.sh runtests.sh add_remote.sh"
-scripts="$scripts bicep.sh"
+scripts="$scripts bicep.sh restart.sh"
 renamed_scripts="install.sh"
 all_scripts="$scripts $renamed_scripts"
 
@@ -33,7 +33,7 @@ do
 done
 
 for script in $renamed_scripts; do
-  name="project-$name"
+  name="project-$script"
   target="$loc/$name"
   install $target $script
 done

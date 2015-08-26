@@ -11,7 +11,8 @@ if [ -z "$MYREMOTE" ]; then
 fi
 
 if [ -z "$GITHUB_URL" ]; then
-  GITHUB_URL="github.2ndsiteinc.com"
+  echo "GITHUB_URL is not set in .fgrc. Please set it."
+  exit 1
 fi
 
 push_cmd="git push -u $MYREMOTE $branch"
