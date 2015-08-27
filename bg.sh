@@ -8,7 +8,6 @@ ENV=""
 SUPERVISOR=""
 SERVICENAME=""
 RUNCMD=""
-LOGPATH=""
 
 source .fgrc
 
@@ -24,8 +23,4 @@ if [ -n "$SERVICENAME" ]; then
   fi
 fi
 
-if [ -e "$LOGPATH" ]; then
-  tail -f $LOGPATH
-else
-  echo 'No log to tail :(. Please add it to LOGFILE in .fgrc.'
-fi
+./tail.sh
