@@ -11,6 +11,10 @@ fi
 
 git co master
 git fetch origin
+if [ $? ]; then
+  exit $?
+fi
+
 git merge origin/master
 if [ $? ]; then
   exit $?
