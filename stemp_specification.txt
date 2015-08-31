@@ -1,0 +1,42 @@
+Stemp Templating language specification
+=======================================
+
+Stemp is a very, very simple templating language. It's *S*imple *Temp*lating.
+haha, get it?
+
+Anyways, it's pretty easy to use.
+
+Template files
+==============
+Template files should be named <filename>.stemp.  This should include the file
+extension, so if you are templating `nginx.conf`, your template should be named
+`nginx.cong.stemp`.
+
+If you don't want to do this, whatever, It's only PART OF THE GODDAMN SPEC!!!!
+But seriously, if you don't this won't blow up. This is literally just a
+convention I made up while sitting in a massage chair because I wanted to make
+up a convention.
+
+What's inside the file should be *exactly* what you want the output to look
+like, with one exception. Well, usually there should be a bunch of exceptions,
+but you get what I mean.  Wherever you want Stemp to render a value, you need
+to add a token.  What's a token? Simple: it's a word surrounded by "$(" and ")"
+It doesnt even have to be a word. It can literally be anything.  Well not
+*anything*, you can't put like, a banana in there.  Unless it's a banana emoji.
+that *might* work, but frankly I haven't tested it.
+
+What are tokens for? Easy - playing arcade games! Wait, no wrong kind of token.
+Actually, they're used to mark places in the template where Stemp will insert a
+value.  The whole token, "$(" and ")" included will be swapped out for whatever
+the matching value in the values file is.
+
+What's the values file, you ask? Good question! It's a file in JSON format
+containing the dictionary that Stemp will use to turn tokens into actual text
+in the output. So if your values file contains `{'cows': 'say moo'}`, then the
+token `$(cows)` will be turned into `say moo` in the output file.
+
+#example#
+
+#optional args#
+
+#recursive tokens#

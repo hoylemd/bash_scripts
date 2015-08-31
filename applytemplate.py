@@ -14,6 +14,10 @@ help_string = 'Path to the output file. Stdout will be used if omitted'
 parser.add_argument('-o', '--output-path', dest='output_path',
                     help=help_string)
 
+help_string = 'Print out the Stemp specifiction'
+parser.add_argument('-s', '--specification', dest='print_specification',
+                    action='store_true', help=help_string)
+
 args = parser.parse_args()
 
 if __name__ == '__main__':
