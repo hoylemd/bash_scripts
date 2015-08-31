@@ -1,7 +1,16 @@
 #! /bin/bash
 
+##
+# Installer/updater script for my dev tools
+#
+# usage: ./install.sh <target directory>
+#
+# if <target directory doesn't exist, it will be created>
+#
+##
+
 loc=$(pwd)
-cd $1
+targetdir=$1
 
 # script installer/updater
 # params: source, destination
@@ -12,14 +21,24 @@ install () {
   ln -fs $src $dest
 }
 
+# git exclusion adder
+# params: exclusion line to add
 add_git_exclusion () {
-  exclusion=$1 # path to exclude
+  exclusion=$1 # exclusion line to add
 
+  # check if the line already exists
   if ! grep -q $exclusion .git/info/exclude;
   then
+    # append the line
     echo $exclusion >> .git/info/exclude
   fi
 }
+
+# make/cd into the target
+if [ ! -d $targetdir ]; then
+  mkdir $targetdir
+fi
+cd $targetdir
 
 scripts="push-upstream.sh update.sh fg.sh go.sh runtests.sh add_remote.sh"
 scripts="$scripts bicep.sh restart.sh tail.sh bg.sh"
