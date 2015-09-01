@@ -10,7 +10,7 @@ Template files
 ==============
 Template files should be named <filename>.stemp.  This should include the file
 extension, so if you are templating `nginx.conf`, your template should be named
-`nginx.cong.stemp`.
+`nginx.conf.stemp`.
 
 If you don't want to do this, whatever, It's only PART OF THE GODDAMN SPEC!!!!
 But seriously, if you don't this won't blow up. This is literally just a
@@ -20,28 +20,31 @@ up a convention.
 What's inside the file should be *exactly* what you want the output to look
 like, with one exception. Well, usually there should be a bunch of exceptions,
 but you get what I mean.  Wherever you want Stemp to render a value, you need
-to add a token.  What's a token? Simple: it's a word surrounded by "$(" and ")"
+to add a token.  What's a token? Simple: it's a word surrounded by "&(" and ")"
 It doesnt even have to be a word. It can literally be anything.  Well not
 *anything*, you can't put like, a banana in there.  Unless it's a banana emoji.
 that *might* work, but frankly I haven't tested it.
 
 What are tokens for? Easy - playing arcade games! Wait, no wrong kind of token.
 Actually, they're used to mark places in the template where Stemp will insert a
-value.  The whole token, "$(" and ")" included will be swapped out for whatever
+value.  The whole token, "&(" and ")" included will be swapped out for whatever
 the matching value in the values file is.
 
 What's the values file, you ask? Good question! It's a file in JSON format
 containing the dictionary that Stemp will use to turn tokens into actual text
 in the output. So if your values file contains `{'cows': 'say moo'}`, then the
-token `$(cows)` will be turned into `say moo` in the output file.
+token `&(cows)` will be turned into `say moo` in the output file.
+
+If a token doesn't map to a value in the values file, the token will just be
+replaced with an empty string.
 
 Example
 =======
 Lets say you have a template file named `friends.txt.stemp`. It has the
 following content:
 ```
-My name is $(my_name), And I have friends. My best friend is $(best_friend),
-and my worst enemy is $(total_douchecanoe).
+My name is &(my_name), And I have friends. My best friend is &(best_friend),
+and my worst enemy is &(total_douchecanoe).
 ```
 
 You also create a values file named `monday.json` with the following content:
@@ -91,44 +94,6 @@ My name is Skeletor, And I have friends. My best friend is Prince Adam,
 and my worst enemy is He-Man.
 ```
 
-Optional Arguments
-==================
-
---input-template <template_path>
-You don't have to pass in the `--input-template` parameter every time if you
-don't want to. If that parameter is omitted, Stemp will read the template from
-stdin.  It'll write output every time it hits a newline, and exit when it hits
-an EOD marker.
-
---output-file <output_path>
-As you my have noticed from the presense or absence of the `--output-file`
-parameter in the example, it is also optional.  If omitted, the rendered file
-will be printed to stdout.
-
---recursion-strategy <strategy_name>
-Dictates the way Stemp handles recursive tokens. Current options are:
-```
-iterative: check the looked-up value for contained tokens before inserting into
-  the output document.  The entire value is buffered for this, until the
-  resulting output string contains no more tokens, then it is output, line by
-  line, until no more newlines remain in the output buffer.  If a token loop is
-  detected, the value inserted will be "TOKEN LOOP(<token>):<line_number>",
-  where <token> is the token that Stemp is attempting to render when it detects
-  the loop, and <line_number> is the line number of the input template that
-  the first token that led to the loop was found.
-
-none: Just don't do it. Tokens will be rendered to their mapped values
-  verbatim, and will not be analyzed for recursion at all.  This is helpful if
-  you want to do any post-processing, or multi-pass renders.
-
---token-marker <marker_string>
-
---token-delimiter <delimiter_string>
-
---strict-mode
-
-
-
 Recursive Tokens
 ================
 Know what would be really cool? If tokens could contain tokens. Well guess
@@ -153,8 +118,254 @@ in the values file, or if there is a set of data to be rendered out.
 Arry tokens can be used in 2 ways: indexed and non-indexed. Indexed array
 tokens look like this:
 ```
-$(page[3])
+&(page[3])
+```
+The '[' and ']' characters are special, but *only* if they are balanced in the
+token. The value between the [ and ] must be a positive integer (with two
+exceptions, described below). If it is not,the token will be treated as if it
+does not have a mapped value.  The value between [ and ] will be then cast
+directly to an integer, and the value of that element in the values array will
+be swapped for the token.
+
+Non-indexed array tokens are much the same, except with no index value:
+```
+&(page[])
+```
+The output behavior in this case depends on the previous use of the array
+token. When an array token is used in indexed form, Stemp makes a note of the
+index used.  Then, next time the same array token is used in non-indexed form,
+it simply increments that index by one, and uses that as the index.  If the
+array token has not yet been used, it uses 0 as the index. If the computed
+index does not exist in the array (so if it overflows), 0 will be used as the
+index.
+
+The last indexed value can also be accessed by passing in a dash ('-') between
+the [ and ]. This will function identically to the last array token found, or
+`&(array[0])` if this is the first token of this array.
+
+The index of the last value can also be accessed by passing in a hash symbol
+('#'). It will swap the token for the array's last index, or 0 if it has not
+been accessed yet.
+
+Hash tokens behave similarly to indexed array tokens, but instead of a number,
+any string can be passed in as a key, except the special '-' or '#' keys, as
+that is used to repeat the last hash token, much like with array tokens.  The
+hash ('#') key can also be used to get the value of the last hash key, like
+with array indexes.
+
+The passed key will be used to extract a value from the named hash in the
+values file.
+```
+Steve's favourite colour is &(favourite_colours[steve]).
+```
+renders as
+```
+Steve's favourite colour is green.
+```
+with
+```
+{
+  "favourite_colours": {
+    "steve": "green",
+    "lucy": "blue"
+  }
+}
+```
+in the values file.
+
+Optional Arguments
+==================
+
+--input-template <template_path>
+You don't have to pass in the `--input-template` parameter every time if you
+don't want to. If that parameter is omitted, Stemp will read the template from
+stdin.  It'll write output every time it hits a newline, and exit when it hits
+an EOD marker.
+
+--output-file <output_path>
+As you my have noticed from the presense or absence of the `--output-file`
+parameter in the example, it is also optional.  If omitted, the rendered file
+will be printed to stdout.
+
+--recursion-strategy <strategy_name>
+Dictates the way Stemp handles recursive tokens. Current options are:
+```
+iterative: (default) check the looked-up value for contained tokens before
+  inserting into the output document.  The entire value is buffered for this,
+  until the resulting output string contains no more tokens, then it is output,
+  line by line, until no more newlines remain in the output buffer.  If a token
+  loop is detected, the value inserted will be
+  "TOKEN LOOP(<token>):<line_number>", where <token> is the token that Stemp is
+  attempting to render when it detects the loop, and <line_number> is the line
+  number of the input template that the first token that led to the loop was
+  found.
+
+none: Just don't do it. Tokens will be rendered to their mapped values
+  verbatim, and will not be analyzed for recursion at all.  This is helpful if
+  you want to do any post-processing, or multi-pass renders.
+
+iterative-strict: As iterative above, but throw an error if a loop is detected,
+  and stop immediately. Also, print out a token stack trace to stderr.
+
+anything else: Anything else will be treated as the iterative strategy -
+  falling back to default.
 ```
 
-The '[' and ']' characters are special, but *only* if they are balanced in the
-token.
+--mismatched-token-strategy <strategy>
+This overrides the default 'swap mismatched tokens for emptystring' behavior
+with one of the following strategies:
+```
+emptystring: (default) If a token is found to have no matching mapping in the
+  values file, it will simply be removed from the output, so if the token
+  &(banana) doesn't have a value in the values file, the template
+  ```
+  I like &(banana) sandwiches.
+  ```
+  will be rendered as
+  ```
+  I like  sandwiches.
+  ```
+
+strict: if an unmatched token is found, throw an error, print a token stack
+  trace to stderr, and exit. In the case of an array or hash token with an
+  invalid index/key, a different error will be thrown, but everything else will
+  be the same.
+
+anything else: Switch unmatched tokens for a set message. The string passed
+  here will be swapped for the mismatched token directly. So if the token
+  &(banana) doesn't have a value in the values file, and 'mustard' is passed as
+  the <strategy>, the template
+  ```
+  I like &(banana) sandwiches.
+  ```
+  will be rendered as
+  ```
+  I like mustard sandwiches.
+  ```
+  This will not play well with spaces, but can be used to store a missing value
+  message in a token, if recursive tokens are used.
+```
+
+--array-oob-strategy <strategy>
+This controls the behavior of when a non-indexed array token is rendered, and
+the next element in the array does not exist. The following strategies are
+accepted:
+```
+overflow: (Default) Loop back to zero when an overflow is detected.
+
+mismatch: Treat overflowing non-indexed array tokens as mismatched tokens. The
+  actual behavior here will be dictated by the --mismatched-token-strategy
+  option.  Beware, if `--mismatched-token-strategy strict` is in use, the error
+  will be indistinguishable from a 'normal' mismatched token error.
+
+strict: Throw an error, print a token stack trace to stderr, and exit
+  immediately.
+```
+note: 'oob' stands for 'Out of Bounds', not 'Out of Bananas', despite the
+exception name ;)
+
+
+--token-marker <marker_string>
+The above examples and strict specification use `&(<token>)` as the formatting
+of a token, but Stemp is smart enough to know that My opinion is not
+necessarily right for you.  You can set this to any string to override the `&`
+marker in that token format. so if you pass
+```
+--token-marker *
+```
+then your tokens should be written like '*(token)'.  Any non-zero length string
+will work, but including newlines or EOD in that string will break Stemp's
+ability to recognize tokens, so don't do that.
+
+--token-delimiter-left <delimiter_string>
+--token-delimiter-right <delimiter_string>
+These parameters can be used to switch out the strings used to denote the
+opening and closing strings that surround a token. These replace the '(' and
+')' parts of the default token format respectively. so if you passed
+```
+--token-delimiter-left hoedown! --token-delimiter-right yeehaw!
+```
+your tokens should look like `&hoedown!tokenyeehaw!`
+
+--array-delimiter-left <delimiter_string>
+--array-delimiter-right <delimiter_string>
+Like the --token-delimiter options, this overrides the array token notation. so
+if
+```
+--array-delimiter-left . --array-delimiter-right _
+```
+are passed in, array tokens should look like this:
+```
+&(array._)
+&(array.3_)
+```
+
+--hash-delimiter-left <delimiter_string>
+--hash-delimiter-right <delimiter_string>
+Like the --token-delimiter options, this overrides the hash token notation. so
+if
+```
+--hash-delimiter-left . --hash-delimiter-right _
+```
+are passed in, hash tokens should look like this:
+```
+&(hash.tuesday_)
+```
+
+--struct-delimiter-left <delimiter_string>
+--struct-delimiter-right <delimiter_string>
+These combine the `--array-delimiter-left/right` and
+`--has-delimiter-left/right` options, for ease of use. The more specific
+options will override these.
+
+--last-array-value <special_string>
+This can be used to override the default magic string for accessing the last
+array value (default is '-'). It can be any string.
+
+--last-array-index <special_string>
+This can be used to override the default magic string for accessing the last
+array index (default is '#'). It can be any string.
+
+--last-hash-value <special_string>
+This can be used to override the default magic string for accessing the last
+hash value (default is '-'). It can be any string.
+
+--last-hash-key <special_string>
+This can be used to override the default magic string for accessing the last
+hash key (default is '#'). It can be any string.
+
+--last-struct-value <special_string>
+--last-struct-index <special_string>
+These combine the `--last-array-value/index` and `--last-hash-value/key`
+options for ease of use. The more specific options will override these.
+
+--strict
+This removes all permissiveness towards malformed input. It includes the
+functionality of the `--recursion-strategy iterative-strict` and
+`--mismatched-token-strategy strict` options.
+
+--less-strict
+This removes the 'throw an error' and exit immediately' part of all strict-mode
+errors (from `--strict`, or strategies). Token Stack traces will still be
+printed to sterr, and all erroring tokens will be replaced with
+`:::TOKEN ERROR <#>:::`, with <#> swapped with the ordinal of that error.
+Stack traces will also include a `:::TOKEN ERROR <#>:::` header, so it's easy
+to find what stack trace corresponds to where in the output. Very useful for
+debugging.
+
+--debug-mode
+Combines the `--strict` and `--less-strict` optons for easy usage.
+
+Config File
+===========
+If a `.stemp_config` file is found in the current directory or your home
+directory, Stemp will parse it for options before running.  Command line
+arguments will override current directory configuration, and current directory
+configuation will override home firector configuration.
+
+Config files should be in JSON format. To set a parameter, add a key to the
+JSON hash with the parameter flag (minus the '--' prefix), with the value being
+a string with that parameter's value in it.  In the case of the `strict`
+argument, the value should be any truthy Javascript value to turn it on, and
+any falsky Javascript value to turn it off.
+
