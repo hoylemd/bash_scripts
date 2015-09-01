@@ -91,7 +91,70 @@ My name is Skeletor, And I have friends. My best friend is Prince Adam,
 and my worst enemy is He-Man.
 ```
 
+Optional Arguments
+==================
 
-#optional args#
+--input-template <template_path>
+You don't have to pass in the `--input-template` parameter every time if you
+don't want to. If that parameter is omitted, Stemp will read the template from
+stdin.  It'll write output every time it hits a newline, and exit when it hits
+an EOD marker.
 
-#recursive tokens#
+--output-file <output_path>
+As you my have noticed from the presense or absence of the `--output-file`
+parameter in the example, it is also optional.  If omitted, the rendered file
+will be printed to stdout.
+
+--recursion-strategy <strategy_name>
+Dictates the way Stemp handles recursive tokens. Current options are:
+```
+iterative: check the looked-up value for contained tokens before inserting into
+  the output document.  The entire value is buffered for this, until the
+  resulting output string contains no more tokens, then it is output, line by
+  line, until no more newlines remain in the output buffer.  If a token loop is
+  detected, the value inserted will be "TOKEN LOOP(<token>):<line_number>",
+  where <token> is the token that Stemp is attempting to render when it detects
+  the loop, and <line_number> is the line number of the input template that
+  the first token that led to the loop was found.
+
+none: Just don't do it. Tokens will be rendered to their mapped values
+  verbatim, and will not be analyzed for recursion at all.  This is helpful if
+  you want to do any post-processing, or multi-pass renders.
+
+--token-marker <marker_string>
+
+--token-delimiter <delimiter_string>
+
+--strict-mode
+
+
+
+Recursive Tokens
+================
+Know what would be really cool? If tokens could contain tokens. Well guess
+what Stemp can do! If a token is found and replaced, The replacement value of
+that token will immediately be checked for further contained tokens, and those
+tokens will be rendered out as well. More tokens then? fine! It'll continue
+forever (or at least to some point where it would make sense to be all like
+"screw you guys i'm going home"). If a circularly nested token is found, It'll
+instead be replaced with "LOOPED TOKEN:(<token>)". I'll also do my best to make
+this give a clear picture of where in the token's recursion tree the loop was
+discovered, so you can fix your values easily.  TODO: There are probably other
+ways to handle bad recursive tokens, and I'll try and make those other ways
+options, with the `--recursion-strategy` parameter.
+
+Array and Hash Tokens
+============
+Ok, fine you want more? Alright, last one!  Stemp support what I call 'array
+and hash tokens'. What're those? It's when the values file maps a json object
+or array to a token instead of a string.  That's useful for grouping tokens
+in the values file, or if there is a set of data to be rendered out.
+
+Arry tokens can be used in 2 ways: indexed and non-indexed. Indexed array
+tokens look like this:
+```
+$(page[3])
+```
+
+The '[' and ']' characters are special, but *only* if they are balanced in the
+token.
