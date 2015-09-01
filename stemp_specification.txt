@@ -35,7 +35,62 @@ containing the dictionary that Stemp will use to turn tokens into actual text
 in the output. So if your values file contains `{'cows': 'say moo'}`, then the
 token `$(cows)` will be turned into `say moo` in the output file.
 
-#example#
+Example
+=======
+Lets say you have a template file named `friends.txt.stemp`. It has the
+following content:
+```
+My name is $(my_name), And I have friends. My best friend is $(best_friend),
+and my worst enemy is $(total_douchecanoe).
+```
+
+You also create a values file named `monday.json` with the following content:
+```
+{
+  "my_name": "Ash Ketchum",
+  "best_friend": "Pikachu",
+  "total_douchecanoe": "Gary Oldman"
+}
+```
+
+You want to create a file named `friends.txt`, so you'd run this
+command:
+```
+stemp monday.json --input-template friends.txt.stemp
+```
+
+The output would be:
+```
+My name is Ash Ketchum, And I have friends. My best friend is Pikachu,
+and my worst enemy is Gary Oldman.
+```
+
+Yay! you made the right output! But this didn't go to a file.  You could either
+use UNIX output redirection to save the file:
+```
+stemp monday.json --input-template friends.txt.stemp > friends.txt
+```
+
+Or, you could use the --output-file flag to have stemp create the file for you
+```
+stemp monday.json --input-template friends.txt.stemp --output-file friends.txt
+```
+
+If you used a different values file (tuesday.txt):
+```
+{
+  "my_name": "Skeletor",
+  "best_friend": "Prince Adam",
+  "total_douchecanoe": "He-Man"
+}
+```
+
+The output would be:
+```
+My name is Skeletor, And I have friends. My best friend is Prince Adam,
+and my worst enemy is He-Man.
+```
+
 
 #optional args#
 
