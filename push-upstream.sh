@@ -28,7 +28,7 @@ ERROR_env_var_not_set="is not set. please set it in .fgrc"
 # determine target remote
 remote=$1
 if [ ! "$remote" ]; then
-  if [ ! "$MYREMOTE" ]; then
+  if [ "$MYREMOTE" ]; then
     remote=$MYREMOTE
   else
     remote="origin"
@@ -41,17 +41,27 @@ if [ -z "$GITHUB_URL" ]; then
   exit 2
 fi
 
+git remote > my.remotes
+
+result=0
+if ! grep -q $remote my.remotes; then
+  echo "remote '$remote' does not exist. Attempting to create..."
+  result=$(./addRemote.sh $remote)
+  if [ $result -eq 0 ]; then
+    $push_cmd
+  fi
+fi
+rm my.remotes
+
+if [ $result -gt 0 ]; then
+  exit $result
+fi
+
 push_cmd="git push -u $remote $branch"
 $push_cmd
-
-if [ $? -gt 0 ]; then
-  echo "remote '$remote' does not exist. Attempting to create..."
-  if [ -n "$REPO_NAME" ]; then
-    ./addRemote.sh $remote
-    $push_cmd
-  else
-    echo "No repository name set. Please edit the 'REPO_NAME' setting in .fgrc"
-  fi
+retcode=$?
+if [ $retcode -gt 0 ]; then
+  echo "push failed somehow."
 fi
 
 
