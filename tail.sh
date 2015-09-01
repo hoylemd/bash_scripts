@@ -1,7 +1,5 @@
 LOGPATH=""
-echo "$LOGPATH"
 source .fgrc
-echo "$LOGPATH"
 
 if [ -e "$LOGPATH" ]; then
   tail -f $LOGPATH
