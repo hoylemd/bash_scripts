@@ -5,6 +5,8 @@ SUPERVISOR=""               # optional: supervisor type
 SERVICENAME=""              # optional: the app's supervisor service name
 INSTALLCMD=""               # command to run to install/setup this app
 RUNCMD=""                   # command to run the app in theforeground
+PROD_FLAGS=""               # flags to pass to the run command for prod mode
+DEV_FLAGS=""                # flags to pass to the run command for dev mode
 LOGPATH=""                  # path to the log file to be `tail`ed on bg.sh
 
 MYREMOTE="hoylemd"          # the remote name to use for your upstream
