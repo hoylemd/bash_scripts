@@ -74,3 +74,11 @@ if [ ! -e .fgrc ]; then
   vim .fgrc
 fi
 
+source .fgrc
+
+if [ ! -z "$ENV" ]; then
+  if [ ! -d $ENV ]; then
+    virtualenv $ENV
+  fi
+fi
+
