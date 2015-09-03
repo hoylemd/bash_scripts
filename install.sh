@@ -76,9 +76,13 @@ fi
 
 source .fgrc
 
-if [ ! -z "$ENV" ]; then
+if [ "$ENV" ]; then
   if [ ! -d $ENV ]; then
     virtualenv $ENV
   fi
+fi
+
+if [ "$MYREMOTE" ] && [ "$REPO_NAME" ] && [ "$GITHUB_URL" ]; then
+  git clone git@$GITHUB_URL:$MYREMOTE/$REMO_NAME.git
 fi
 
