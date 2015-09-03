@@ -6,7 +6,6 @@ REPO_NAME=""
 source .fgrc
 
 remote=$1
-# check environment and params
 
 git remote add $remote git@$GITHUB_URL:$1/$REPO_NAME
 result=$(git fetch $remote)
