@@ -1,9 +1,19 @@
+#!/bin/bash
+
 ENV=""
 SUPERVISOR=""
 SERVICENAME=""
 RUNCMD=""
+PROD_FLAGS=""
+DEV_FLAGS=""
 
 source .fgrc
+
+flags=$DEV_FLAGS
+# check for -p or --production flag
+if [ "$1" == "-p" ] || [ "$1" == "--production" ]; then
+  flags=$PROD_FLAGS
+fi
 
 if [ -n "$SERVICENAME" ]; then
   if [ -z "$SUPERVISOR" ] || [ "$SUPERVISOR" == "supervisorctl" ]; then
@@ -22,5 +32,5 @@ if [ -n "$ENV" ]; then
 fi
 
 if [ -n "$RUNCMD" ]; then
-  $RUNCMD
+  $RUNCMD $flags
 fi

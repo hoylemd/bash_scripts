@@ -1,4 +1,2 @@
-source .fgrc
-
-set -x
-$RUNCMD $PROD_FLAGS
+#!/bin/bash
+./go --production
