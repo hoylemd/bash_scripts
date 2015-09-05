@@ -10,7 +10,7 @@ DEV_FLAGS=""                # flags to pass to the run command for dev mode
 LOGPATH=""                  # path to the log file to be `tail`ed on bg.sh
 
 MYREMOTE="hoylemd"          # the remote name to use for your upstream
-REPO_NAME="bash_scripts"                # the repository name for this app
+REPO_NAME=""                # the repository name for this app
 GITHUB_URL="github.com"     # optional: url to your git server (github)
 
 TESTCMD=""                  # optional: command to run tests
