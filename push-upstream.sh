@@ -1,3 +1,5 @@
+#!/bin/bash
+
 MYREMOTE=""
 REPO_NAME=""
 GITHUB_URL=""
@@ -7,7 +9,7 @@ source .fgrc
 branch=$(git rev-parse --abbrev-ref HEAD)
 
 if [ -z "$MYREMOTE" ]; then
-  MYREMOTE=mhoyle
+  MYREMOTE=hoylemd
 fi
 
 if [ -z "$GITHUB_URL" ]; then
