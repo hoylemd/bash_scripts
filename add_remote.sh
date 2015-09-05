@@ -24,5 +24,11 @@ if [ -z "$REPO_NAME" ]; then
 fi
 
 git remote add $REMOTE git@$GITHUB_URL:$REMOTE/$REPO_NAME.git
-git fetch $REMOTE
+
+if [ $? ]; then
+  echo 'Something went wrong. Checking your ssh-agent...'
+  ssh-add -ls
+else
+  git fetch $REMOTE
+fi
 

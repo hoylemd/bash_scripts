@@ -20,7 +20,7 @@ fi
 push_cmd="git push -u $MYREMOTE $branch"
 $push_cmd
 
-if [ $? -gt 0 ]; then
+if [ $? ]; then
   if [ -n "$REPO_NAME" ]; then
     ./add_remote.sh $MYREMOTE
     $push_cmd
