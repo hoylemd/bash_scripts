@@ -40,8 +40,8 @@ if [ ! -d $targetdir ]; then
 fi
 cd $targetdir
 
-scripts="push-upstream.sh update.sh fg.sh go.sh runtests.sh add_remote.sh"
-scripts="$scripts bicep.sh restart.sh tail.sh bg.sh addRemote.sh prod.sh"
+scripts="push-upstream.sh update.sh fg.sh go.sh runtests.sh addRemote.sh"
+scripts="$scripts bicep.sh restart.sh tail.sh bg.sh prod.sh"
 renamed_scripts="install.sh"
 all_scripts="$scripts $renamed_scripts"
 

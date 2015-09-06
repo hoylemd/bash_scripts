@@ -22,7 +22,7 @@ $push_cmd
 
 if [ $? ]; then
   if [ -n "$REPO_NAME" ]; then
-    ./add_remote.sh $MYREMOTE
+    ./addRemote.sh $MYREMOTE
     $push_cmd
   else
     echo "No repository name set. Please edit the 'REPO_NAME' setting in .fgrc"
