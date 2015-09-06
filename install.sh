@@ -11,6 +11,8 @@
 
 loc=$(pwd)
 targetdir=$1
+FALSE=""
+TRUE="TRUE"
 
 # script installer/updater
 # params: source, destination
@@ -34,8 +36,18 @@ add_git_exclusion () {
   fi
 }
 
+# set up a repo
+set_up_repo () {
+  git init
+  echo "readme" > README.md
+  git add README.md
+  git commit -m "initial commit"
+}
+
 # make/cd into the target
+setup=$FALSE
 if [ ! -d $targetdir ]; then
+  setup=$TRUE
   mkdir $targetdir
 fi
 cd $targetdir
@@ -63,21 +75,39 @@ if [ ! -e .fgrc ]; then
 fi
 source .fgrc
 
-doinit=0
+project_name=""
 code=0
 if [ "$MYREMOTE" ] && [ "$REPO_NAME" ] && [ "$GITHUB_URL" ]; then
-  git status -s
-  statuscode=$?
-  if [ $statuscode -gt 0 ]; then
-    git clone git@$GITHUB_URL:$MYREMOTE/$REMO_NAME.git
-    code=$?
-  fi
-else
-  doinit=100
-fi
+  # check connectivity
+  ping -c 1 $GITHUB_URL
+  ping_code=$?
 
-if [ $doinit -gt 0 ] || [ $code -gt 0 ]; then
-  git init
+  # check if this is already a repo
+  git status -s
+  project_name=$REPO_NAME
+  # if git status indicates no repo
+  if [ $? -gt 0 ]; then
+    # if we have internet connection
+    if [ $ping_code -eq 0 ]; then
+      git clone git@$GITHUB_URL:$MYREMOTE/$REPO_NAME.git
+      # if remote repo doesn't exist
+      if [ $? -gt 0 ]; then
+        set_up_repo
+        ~/bash_scripts/createRepo.sh $project_name
+        ./push-upstream.sh
+      fi
+    # set it up offline
+    else
+      set_up_repo
+    fi
+  fi
+# if there isn't remote info
+else
+  git status -s
+  # if no repo
+  if [ $? -gt 0 ]; then
+    set_up_repo
+  fi
 fi
 
 for script in $all_scripts
