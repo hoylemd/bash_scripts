@@ -11,6 +11,7 @@
 
 loc=$(pwd)
 targetdir=$1
+project_name=$2
 FALSE=""
 TRUE="TRUE"
 
@@ -38,10 +39,20 @@ add_git_exclusion () {
 
 # set up a repo
 set_up_repo () {
+  echo "setting up repo"
   git init
   echo "readme" > README.md
   git add README.md
   git commit -m "initial commit"
+}
+
+# make a json key-value pair
+# params: key, value
+json_key_value () {
+  key="$1"
+  value="$2"
+  string="\"$key\": \"$value\""
+  echo "$string"
 }
 
 # make/cd into the target
@@ -71,24 +82,42 @@ done
 
 if [ ! -e .fgrc ]; then
   cp $loc/.fgrc .
+  # check that stemp is available
+  if [ -e ~/stemp/stemp.py ]; then
+    # ready the values!
+
+    if [ -z "$project_name" ]; then
+      PWD=$(pwd)
+      project_name=$(basename $PWD)
+    fi
+
+    remote_value=$(json_key_value "MYREMOTE" "hoylemd")
+    github_value=$(json_key_value "GITHUB_URL" "github.com")
+    repo_value=$(json_key_value "REPO_NAME" "$project_name")
+    values="{$remote_value, $github_value, $repo_value}"
+    echo $values > /tmp/fgrc_values
+    python ~/stemp/stemp.py /tmp/fgrc_values -i $loc/fgrc.stemp -o .fgrc
+  fi
   vim .fgrc
 fi
 source .fgrc
 
-project_name=""
 code=0
 if [ "$MYREMOTE" ] && [ "$REPO_NAME" ] && [ "$GITHUB_URL" ]; then
   # check connectivity
-  ping -c 1 $GITHUB_URL
+  ping -o -t 3 -q $GITHUB_URL
   ping_code=$?
 
-  # check if this is already a repo
-  git status -s
-  project_name=$REPO_NAME
-  # if git status indicates no repo
-  if [ $? -gt 0 ]; then
+  if [ -z "$project_name" ]; then
+    project_name=$REPO_NAME
+  fi
+
+  # if not in a git repo
+  if [ ! -d ".git" ]; then
+    echo "no repo"
     # if we have internet connection
     if [ $ping_code -eq 0 ]; then
+      echo "cloning"
       git clone git@$GITHUB_URL:$MYREMOTE/$REPO_NAME.git
       # if remote repo doesn't exist
       if [ $? -gt 0 ]; then
@@ -98,6 +127,7 @@ if [ "$MYREMOTE" ] && [ "$REPO_NAME" ] && [ "$GITHUB_URL" ]; then
       fi
     # set it up offline
     else
+      echo "set up offline"
       set_up_repo
     fi
   fi

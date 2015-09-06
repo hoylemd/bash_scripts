@@ -26,7 +26,7 @@ if [ -z "$GITHUB_URL" ]; then
 fi
 
 if [ -z "$REPO_NAME" ]; then
-  REPO_NAME=basename $PWD
+  REPO_NAME=$(basename $PWD)
   echo "$no_repo_name"
   echo "$no_repo_name_2 ($REPO_NAME)"
 fi
