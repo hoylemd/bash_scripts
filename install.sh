@@ -57,7 +57,28 @@ for script in $renamed_scripts; do
   install $target $script
 done
 
-git init
+if [ ! -e .fgrc ]; then
+  cp $loc/.fgrc .
+  vim .fgrc
+fi
+source .fgrc
+
+doinit=0
+code=0
+if [ "$MYREMOTE" ] && [ "$REPO_NAME" ] && [ "$GITHUB_URL" ]; then
+  git status -s
+  statuscode=$?
+  if [ $statuscode -gt 0 ]; then
+    git clone git@$GITHUB_URL:$MYREMOTE/$REMO_NAME.git
+    code=$?
+  fi
+else
+  doinit=100
+fi
+
+if [ $doinit -gt 0 ] || [ $code -gt 0 ]; then
+  git init
+fi
 
 for script in $all_scripts
 do
@@ -69,20 +90,8 @@ add_git_exclusion "my.*"
 add_git_exclusion "their.*"
 add_git_exclusion "env"
 
-if [ ! -e .fgrc ]; then
-  cp $loc/.fgrc .
-  vim .fgrc
-fi
-
-source .fgrc
-
 if [ "$ENV" ]; then
   if [ ! -d $ENV ]; then
     virtualenv $ENV
   fi
 fi
-
-if [ "$MYREMOTE" ] && [ "$REPO_NAME" ] && [ "$GITHUB_URL" ]; then
-  git clone git@$GITHUB_URL:$MYREMOTE/$REMO_NAME.git
-fi
-
