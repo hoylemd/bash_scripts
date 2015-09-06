@@ -83,6 +83,11 @@ done
 if [ ! -e .fgrc ]; then
   cp $loc/.fgrc .
   # check that stemp is available
+  if [ ! -e ~/stemp/stemp.py ]; then
+    cd ~
+    git clone git@$GITHUB_URL:$MYREMOTE/Stemp stemp
+  fi
+
   if [ -e ~/stemp/stemp.py ]; then
     # ready the values!
 

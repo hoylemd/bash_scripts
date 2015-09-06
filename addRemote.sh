@@ -31,24 +31,32 @@ if [ -z "$REPO_NAME" ]; then
   echo "$no_repo_name_2 ($REPO_NAME)"
 fi
 
-git remote add $remote git@$GITHUB_URL:$1/$REPO_NAME
-code=$?
-if [ $code -gt 0 ]; then
-  echo 'Something went wrong. Checking your ssh-agent...'
-  ssh-add -ls
+# function to extract the HTTP status code from curl headers
+# params: headers string
+get_status () {
+  headers=$1
+  status_line=$(echo "$headers" | grep -o -e 'HTTP/1.1 [0-9]\{3\}')
+  echo $(echo "$status_line" | grep -o -e '[0-9]\{3\}')
+}
+
+# check that the remote exists
+exists_command="curl -I -u $MYREMOTE -XHEAD"
+headers=$($exists_command https://api.$GITHUB_URL/repos/$remote/$REPO_NAME)
+code=$(get_status "$headers")
+
+if [ $code == "404" ]; then
+  echo "Remote '$remote' does not exist, cannot add."
   exit 3
 fi
 
+git remote add $remote git@$GITHUB_URL:$remote/$REPO_NAME
 git fetch $remote
 code=$?
-if [ $code -gt 0 ]; then
-  ~/bash-scripts/createRepo.sh
-  git fetch $remote
-  ccode=$?
-  if [ $ccode -gt 0 ]; then
-    echo "failed fetch($code) and create($ccode)"
-    git remote remove $remote
-    exit 4
-  fi
-fi
 
+if [ $code -gt 0 ]; then
+  echo 'Something went wrong. Checking your ssh-agent...'
+  ssh-add -ls
+  echo "Removing remote '$remote'"
+  git remote remove $remote
+  exit 4
+fi
