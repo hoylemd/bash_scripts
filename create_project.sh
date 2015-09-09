@@ -19,8 +19,9 @@ set_up_repo () {
   cd $targetdir
   echo "setting up repo"
   git init
-  echo "readme" > README.md
-  git add README.md
+  echo -e "install :" > makefile
+  echo -e "\techo \"nothing to install yet\""
+  git add makefile
   git commit -m "initial commit"
 }
 
