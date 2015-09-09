@@ -105,5 +105,5 @@ else
   git remote add $MYREMOTE git@$GITHUB_URL:$MYREMOTE/$project_name
 fi
 
-#cd $loc
-#./install.sh $targetdir
+cd $loc
+./install.sh $targetdir
