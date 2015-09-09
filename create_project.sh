@@ -56,7 +56,7 @@ else
   source ~/.fgrc
 
   # check connectivity
-  ping -o -t 3 -q $GITHUB_URL
+  ping -c 1 -t 15 -q $GITHUB_URL
 
   # if we have internet connection
   if [ $? -eq 0 ]; then
@@ -98,6 +98,11 @@ else
     echo $values > /tmp/fgrc_values
     python ~/stemp/stemp.py /tmp/fgrc_values -i $loc/fgrc.stemp -o .fgrc
   fi
+
+  vim .fgrc
+  source .fgrc
+
+  git remote add $MYREMOTE git@$GITHUB_URL:$MYREMOTE/$project_name
 fi
 
 #cd $loc
