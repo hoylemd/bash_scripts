@@ -97,6 +97,7 @@ else
     values="{$remote_value, $github_value, $repo_value}"
     echo $values > /tmp/fgrc_values
     python ~/stemp/stemp.py /tmp/fgrc_values -i $loc/fgrc.stemp -o .fgrc
+    rm /tmp/fgrc_values
   fi
 
   vim .fgrc
