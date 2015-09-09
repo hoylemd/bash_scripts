@@ -1,9 +1,9 @@
-ENV=""                      # optional: path to this app's virtualenv
+ENV="env"                   # optional: path to this app's virtualenv
 SUPERVISOR=""               # optional: supervisor type
                             #  acceptable values:(init.d, supervisorctl)
                             #  default: supervisorctl
 SERVICENAME=""              # optional: the app's supervisor service name
-INSTALLCMD=""               # command to run to install/setup this app
+INSTALLCMD="make install"   # command to run to install/setup this app
 RUNCMD=""                   # command to run the app in theforeground
 PROD_FLAGS=""               # flags to pass to the run command for prod mode
 DEV_FLAGS=""                # flags to pass to the run command for dev mode

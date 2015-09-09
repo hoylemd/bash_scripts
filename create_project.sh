@@ -103,6 +103,11 @@ else
   source .fgrc
 
   git remote add $MYREMOTE git@$GITHUB_URL:$MYREMOTE/$project_name
+
+  # create virtualenv
+  virtualenv $ENV
+
+  $INSTALLCMD
 fi
 
 cd $loc
