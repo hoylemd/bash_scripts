@@ -24,6 +24,30 @@ set_up_repo () {
   git commit -m "initial commit"
 }
 
+# install a virtualenv in the target directory
+# params: target directory
+# exit codes:
+#  1: target directory does not exist
+#  2: no ENV specified in .fgrc
+install_env () {
+  targetdir=$1
+  if [ ! -d $targetdir ]; then
+    echo "$targetdir does not exist"
+    exit 1
+  fi
+  cd $targetdir
+  source .fgrc
+  env=$ENV
+  if [ -z "$env" ]; then
+    echo "no ENV specified in .fgrc. Please add it"
+    exit 2
+  fi
+  virtualenv $env
+  if [ -d .git ]; then
+    echo "$env" >> .git/info/exclude
+  fi
+}
+
 # make a json key-value pair
 # params: key, value
 json_key_value () {
@@ -103,6 +127,8 @@ else
   source .fgrc
 
   git remote add $MYREMOTE git@$GITHUB_URL:$MYREMOTE/$project_name
+
+  install_env $(pwd)
 fi
 
 cd $loc
