@@ -8,6 +8,7 @@ RUNCMD=""                   # command to run the app in theforeground
 PROD_FLAGS=""               # flags to pass to the run command for prod mode
 DEV_FLAGS=""                # flags to pass to the run command for dev mode
 LOGPATH=""                  # path to the log file to be `tail`ed on bg.sh
+CLEANPATTERN=""             # pattern to pass to 'rm -rf' before running
 
 MYREMOTE="hoylemd"          # the remote name to use for your upstream
 REPO_NAME=""                # the repository name for this app

@@ -2,7 +2,9 @@ ENV=""
 INSTALLCMD=""
 source .fgrc
 
-source $ENV/bin/activate
+if [ -n "$ENV" ]; then
+  source $ENV/bin/activate
+fi
 
 if [ -n "$INSTALLCMD" ]; then
   $INSTALLCMD
