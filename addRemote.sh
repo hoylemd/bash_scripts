@@ -67,3 +67,4 @@ if [ $code -gt 0 ]; then
   git remote remove $remote
   exit 5
 fi
+exit 0

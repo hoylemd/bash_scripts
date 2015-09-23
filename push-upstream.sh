@@ -62,8 +62,7 @@ $push_cmd
 retcode=$?
 if [ $retcode -gt 0 ]; then
   echo "push failed somehow."
+  exit 3
 fi
 
-
-
-
+exit 0

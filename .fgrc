@@ -20,3 +20,4 @@ TESTPATH=""                 # optional: default path to pass after
                             #  flags to the test command. will be
                             #  superseded by anything actually passed
                             #  when invoking runtests.sh
+AUTOEXEC=""                 # optional: command to auto-run when starting server
