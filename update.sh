@@ -11,26 +11,6 @@ fi
 
 git co -q master
 
-# make sure all keys are added
-keys=$(ls ~/.ssh | grep -e ".*_rsa$")
-ssh_list=$(ssh-add -l)
-result=$?
-if [ $result -gt 0 ]; then
-  echo "ssh-agent is not running. Please start it now."
-  exit 1
-else
-  added=$(echo "$ssh_list" | sed -rn 's/.*\.ssh\/([a-zA-Z0-9_-]+) \(RSA\)/\1/p')
-fi
-
-me=$(whoami)
-for key in $keys; do
-  # check if this key exists
-  if [ ! $(echo "$added" | grep $key) ]; then
-    echo "rsa key $key is missing from agent adding it."
-    ssh-add "/home/$me/.ssh/$key"
-  fi
-done
-
 git fetch origin
 if [ $? -gt 0 ]; then
   exit 2
