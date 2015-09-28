@@ -1,2 +1,2 @@
 #!/bin/bash
-./go --production
+./go.sh --production
