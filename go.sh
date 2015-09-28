@@ -6,6 +6,7 @@ SERVICENAME=""
 RUNCMD=""
 PROD_FLAGS=""
 DEV_FLAGS=""
+CLEANPATTERN=""
 
 source .fgrc
 
@@ -29,6 +30,10 @@ fi
 
 if [ -n "$ENV" ]; then
   source $ENV/bin/activate
+fi
+
+if [ -n "$CLEANPATTERN" ]; then
+  rm -rf $CLEANPATTERN
 fi
 
 if [ -n "$RUNCMD" ]; then

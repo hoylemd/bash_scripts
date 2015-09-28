@@ -1,7 +1,9 @@
 #!/bin/bash
 
 echo 'Updating'
-./update.sh
+out=$(./update.sh)
 
-echo 'Running'
-./go.sh
+if [ $? -eq 0 ]; then
+  echo 'Running'
+  ./go.sh
+fi

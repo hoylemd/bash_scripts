@@ -28,8 +28,15 @@ fi
 if [ -z "$REPO_NAME" ]; then
   REPO_NAME=$(basename $PWD)
   echo "$no_repo_name"
-  echo "$no_repo_name_2 ($REPO_NAME)"
+  echo "$no_repo_name2 ($REPO_NAME)"
 fi
+
+if [ "$remote" == "origin" ]; then
+  echo "Attempting to create origin remote, but this should be done manually."
+  echo "  git remote add git@$GITHUB_URL:<origin_username>/$REPO_NAME\.git"
+  exit 3
+fi
+
 
 # function to extract the HTTP status code from curl headers
 # params: headers string
@@ -46,7 +53,7 @@ code=$(get_status "$headers")
 
 if [ $code == "404" ]; then
   echo "Remote '$remote' does not exist, cannot add."
-  exit 3
+  exit 4
 fi
 
 git remote add $remote git@$GITHUB_URL:$remote/$REPO_NAME
@@ -58,5 +65,6 @@ if [ $code -gt 0 ]; then
   ssh-add -ls
   echo "Removing remote '$remote'"
   git remote remove $remote
-  exit 4
+  exit 5
 fi
+exit 0

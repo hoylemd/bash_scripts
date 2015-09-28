@@ -5,22 +5,21 @@ source .fgrc
 
 branch=$(git rev-parse --abbrev-ref HEAD)
 
-if [ -z "$MYREMOTE" ]; then
-  MYREMOTE=mhoyle
-fi
+git co -q master
 
-git co master
 git fetch origin
 if [ $? -gt 0 ]; then
-  exit $?
+  exit 2
 fi
 
 git merge origin/master
 if [ $? -gt 0 ]; then
-  exit $?
+  exit 3
 fi
 
-./push-upstream.sh
+if [ -n "$MYREMOTE" ]; then
+  ./push-upstream.sh
+fi
 
 git co $branch
 
