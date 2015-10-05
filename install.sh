@@ -23,6 +23,7 @@ add_git_exclusion () {
 
 scripts="push-upstream.sh update.sh fg.sh go.sh runtests.sh addRemote.sh"
 scripts="$scripts bicep.sh restart.sh tail.sh bg.sh rebase.sh autoexec.sh"
+scripts="$scripts back.sh"
 renamed_scripts="install.sh"
 all_scripts="$scripts $renamed_scripts"
 
