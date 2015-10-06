@@ -47,11 +47,12 @@ get_status () {
 }
 
 # check that the remote exists
+echo "checking if the remote exists..."
 exists_command="curl -I -u $MYREMOTE -XHEAD"
 headers=$($exists_command https://api.$GITHUB_URL/repos/$remote/$REPO_NAME)
 code=$(get_status "$headers")
 
-if [ $code == "404" ]; then
+if [ "$code" == "404" ]; then
   echo "Remote '$remote' does not exist, cannot add."
   exit 4
 fi
