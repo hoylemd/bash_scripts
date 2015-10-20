@@ -53,10 +53,6 @@ if ! grep -q $remote my.remotes; then
 fi
 rm my.remotes
 
-if [ $result -gt 0 ]; then
-  exit $result
-fi
-
 push_cmd="git push -u $remote $branch"
 $push_cmd
 retcode=$?

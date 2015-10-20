@@ -37,26 +37,6 @@ if [ "$remote" == "origin" ]; then
   exit 3
 fi
 
-
-# function to extract the HTTP status code from curl headers
-# params: headers string
-get_status () {
-  headers=$1
-  status_line=$(echo "$headers" | grep -o -e 'HTTP/1.1 [0-9]\{3\}')
-  echo $(echo "$status_line" | grep -o -e '[0-9]\{3\}')
-}
-
-# check that the remote exists
-echo "checking if the remote exists..."
-exists_command="curl -I -u $MYREMOTE -XHEAD"
-headers=$($exists_command https://api.$GITHUB_URL/repos/$remote/$REPO_NAME)
-code=$(get_status "$headers")
-
-if [ "$code" == "404" ]; then
-  echo "Remote '$remote' does not exist, cannot add."
-  exit 4
-fi
-
 git remote add $remote git@$GITHUB_URL:$remote/$REPO_NAME
 git fetch $remote
 code=$?

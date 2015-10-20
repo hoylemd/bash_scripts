@@ -49,3 +49,14 @@ done
 add_git_exclusion ".fgrc"
 add_git_exclusion "my.*"
 add_git_exclusion "env"
+
+if [ ! -e ".fgrc" ]; then
+  if [ -e "~/.fgrc" ]; then
+    echo "see it in home"
+    cp ~/.fgrc .
+  else
+    echo "dont see it in home"
+    cp $loc/.fgrc .
+  fi
+  vim .fgrc
+fi
