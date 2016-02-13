@@ -1,0 +1,9 @@
+#! /bin/bash
+
+manage_path='pathman/manage.py'
+dev_settings='config.settings.dev'
+
+command="runserver --settings=$dev_settings"
+
+python $manage_path $command
+

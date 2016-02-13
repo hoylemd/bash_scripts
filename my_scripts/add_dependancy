@@ -1,0 +1,20 @@
+#! /bin/bash
+
+package_manager='pip'
+install_command='install'
+save_command='freeze --local'
+requirements_file='requirements.txt'
+
+target="$1"
+
+if [ -z "$target" ]; then
+  echo "You need to specify a target"
+  echo "  usage: `add_dependancy <package name>`"
+  exit 1
+fi
+
+command="$package_manager $install_command $target"
+$command
+
+command="$package_manager $save_command"
+$command > $requirements_file

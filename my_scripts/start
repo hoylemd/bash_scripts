@@ -1,0 +1,20 @@
+#! /bin/bash
+
+scm='git'
+start_command='checkout -b'
+upstream='origin'
+push_command="push -u $upstream"
+
+branch_name="$1"
+if [ -z "$branch_name" ]; then
+  echo "You must specify a branch name"
+  echo "  usage: `start <branch name>`"
+  exit 1
+fi
+
+if $scm $start_command $branch_name; then
+  $scm $push_command $branch_name
+else
+  echo "Something went wrong with branch creation. aborting."
+fi
+
