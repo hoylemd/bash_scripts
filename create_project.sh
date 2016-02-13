@@ -1,11 +1,11 @@
 #! /bin/bash
 
 ##
-# Installer/updater script for my dev tools
+# project setup
 #
-# usage: ./install.sh <target directory>
+# usage: ./create_project.sh <path_to_project> [<project_name>]
 #
-# if <target directory doesn't exist, it will be created>
+# if <path_to_project> doesn't exist, it will be created
 #
 ##
 
