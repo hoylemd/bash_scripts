@@ -1,4 +1,4 @@
-bash_scripts
-===========
+`bash_scripts`
+--------------
 
-a repo of bash_scripts i made
+a repo of bash scripts i made
